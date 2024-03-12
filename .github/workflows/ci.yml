@@ -10,8 +10,17 @@ jobs:
     - uses: actions/setup-python@v3
     - uses: pre-commit/action@v3.0.1
 
+  configure:
+    steps:
+      - name: Configure splinart cpp
+        run:  |
+              cmake -S . -B .build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DBUILD_EXAMPLES=ON
+              cppcheck --enable=all -q --project=.build/compile_commands.json --suppressions-list=.cppcheck 2> cppcheck_err.txt
+      - name: Activate env
+        run:  pixi shell
   init:
     runs-on: ${{ matrix.os }}
+    needs: pre-commit
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
