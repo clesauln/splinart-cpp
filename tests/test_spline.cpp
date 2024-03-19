@@ -25,7 +25,7 @@ TEST_P(SplineTest, spline) {
 
   auto y2s = splinart::spline(circle.theta, circle.path);
   auto y_new = xt::zeros_like(circle.path);
-  splinart::SplinT(circle.theta, circle.path, y2s, circle.theta, y_new);
+  splinart::splint(circle.theta, circle.path, y2s, circle.theta, y_new);
 
   EXPECT_EQ(circle.path, y_new);
 }
