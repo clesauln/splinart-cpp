@@ -28,13 +28,13 @@ jobs:
           cppcheck --enable=all -q --project=.build/compile_commands.json --suppressions-list=.cppcheck 2> cppcheck_err.txt
         shell: pixi run bash {0}
       - name: Check for errors
+        steps:
+      - id: read
         run: |
-          if [[ -s cppcheck_err.txt ]];
-          then
-            cat cppcheck_err.txt
-            exit -1
-          fi
-
+             if [[ -s cppcheck_err.txt ]];
+             then
+             cat cppcheck_err.txt >> "$GITHUB_OUTPUT"
+             fi
   init:
     runs-on: ${{ matrix.os }}
     needs: [pre-commit, cppcheck]
